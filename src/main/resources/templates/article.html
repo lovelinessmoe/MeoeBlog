@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <title>博客</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7e9287ce32ec37e72643f388a23af365";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <style>
+        .itemContent {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+    </style>
+</head>
+<body>
+<!-- 侧边内容 -->
+<div class="sidebar-content">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <img src="http://q1.qlogo.cn/g?b=qq&nk=1695560542&s=640" alt="" width="120"><br/>
+            <span>逗比先生</span>
+        </div>
+        <div class="layui-card-body">
+            <ul>
+                <li class="txt">
+                    <span>0</span><br/>
+                    <span>文章</span>
+                </li>
+                <li class="visitors">
+                    <span>0</span><br/>
+                    <span>访问人数</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="layui-nav">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+    </ul>
+</div>
+
+
+<!-- 右侧内容区域 -->
+<!--<div class="article-right-content layui-hide">-->
+<div class="article-right-content">
+    <h3>推荐文章</h3>
+    <ul>
+        <li>
+            <button class="layui-btn layui-bg-red">Chrome DevTools</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-orange">css</button>
+        </li>
+        <li>
+            <button class="layui-btn">const</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-cyan">React</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-blue">招聘</button>
+        </li>
+        <li>
+            <button class="layui-btn">Flexbox</button>
+        </li>
+        <li>
+            <button class="layui-btn">xue.js</button>
+        </li>
+        <li>
+            <button class="layui-btn">React</button>
+        </li>
+        <li>
+            <button class="layui-btn">招聘</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-red">Chrome DevTools</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-orange">css</button>
+        </li>
+        <li>
+            <button class="layui-btn">const</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-cyan">React</button>
+        </li>
+        <li>
+            <button class="layui-btn layui-bg-blue">招聘</button>
+        </li>
+        <li>
+            <button class="layui-btn">Flexbox</button>
+        </li>
+        <li>
+            <button class="layui-btn">xue.js</button>
+        </li>
+        <li>
+            <button class="layui-btn">React</button>
+        </li>
+        <li>
+            <button class="layui-btn">招聘</button>
+        </li>
+    </ul>
+</div>
+
+
+<!-- 主要内容 -->
+<div class="main article">
+    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+        <ul class="layui-tab-title">
+            <li class="layui-this">专业文章</li>
+        </ul>
+        <div class="layui-tab-content"></div>
+    </div>
+    <div id="LAY-article-tpl-html">
+        <div>
+            <!--<h1 th:text="${#requset.list.articletitle}">这是标题</h1>-->
+            <!--<h1 th:text="${a}">这是标题</h1>-->
+            <!--<h2 th:text="${#dates.format(s.articletime,'yyyy-MM-dd')}">这是时间</h2>-->
+            <!--<h1>这是标题</h1>-->
+
+
+            <!--
+            <tr th:each="article : ${session.list}">
+                <a th:href="article-detail/${article.getArticleid()}">
+                    <h1 style="color: #dda354">
+                        <td th:text="${article.getArticletitle()}">标题</td>
+                    </h1>
+                    <h3 style="color: #dda354">
+                        <td th:text="${#dates.format(article.getArticletime(),'yyyy-MM-dd')}">2.41</td>
+                    </h3>
+                </a>
+            </tr>
+
+            -->
+
+            <div class="item" th:each="article : ${session.list}">
+                <div class="item-content">
+                    <h3 th:text="${article.getArticletitle()}">标题</h3>
+                    <br/>
+                    <br/>
+                    <div th:text="${article.getArticlecontent()}" class="itemContent">内容</div>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <a th:onclick="'javascript:window.open(\'/article-detail/'+${article.getArticleid()}+'\');'">
+                        <!--是异步处理-->
+                        <!--<a th:onclick="'javascript:window.open(\'./article-detail?oid='+${article.getArticleid()}+'\');'">-->
+                        <button class="layui-btn">阅读全文</button>
+                    </a>
+                </div>
+                <div class="date-box">
+                    <div class="date">
+                        <h4 th:text="${#dates.format(article.getArticletime(),'dd')}">{{Day}}
+
+                        </h4>
+                        <span th:text="${#dates.format(article.getArticletime(),'yyyy/MM')}">{{Time}} </span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="demo1"></div>
+</div>
+
+
+<!-- 搜索框 -->
+<div class="seach">
+    <div class="layui-form seach-box" action="">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn"><i class="layui-icon layui-icon-search"></i></button>
+                <input type="text" name="key" lay-verify="required" placeholder="搜索相关" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/layui/layui.js"></script>
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+    var util;
+    layui.config({
+        base: '/static/js/'
+    }).use(['layBlog', 'util', 'code'], function () {
+        var $ = layui.$;
+        var laytpl = layui.laytpl;
+        layui.code(); //引用code方法
+        util = layui.util;
+        var laypage = layui.laypage;
+        var key = getQueryVariable('key');
+        if (key) {
+            $(".seach-box .layui-input").val(decodeURI(key));
+        }
+
+        /*
+    function getPage(pageNum) {
+        var url = "api/article/getPage";
+        $.post(layui.api.api + url, {keyStr: key});
+        $.post(layui.api.api + url, {keyStr: key}, function (res) {
+            if (res.code === 0) {
+                var bean = $('#LAY-article-tpl-html');
+                bean("");
+                laytpl($($('#LAY-article-tpl'))()).render(res.records, function (html) {
+                    bean.append(html);
+                });
+                if (pageNum == null) {
+                    laypage.render({
+                        elem: 'demo1'
+                        , count: res.total //数据总数
+                        , jump: function (obj, first) {
+                            //首次不执行
+                            if (!first) {
+                                getPage(obj.curr);
+                                //do something
+                            }
+                        }
+                    });
+                }
+            } else {
+                layer.msg('未查询到相关文章！', {
+                    icon: 1
+                });
+            }
+        });
+
+
+    }
+
+    getPage();
+        */
+    });
+    var getDay = function (time) {
+        return util.toDateString(new Date(time), 'dd');
+    };
+    var getTime = function (time) {
+        time = new Date(time);
+        return util.toDateString(time, 'yyyy/MM');
+    };
+
+    function getQueryVariable(variable) {
+        /*
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return pair[1];
+            }
+        }
+        return null;
+
+        */
+        var url = location.href;
+        var vars = url.split("/");
+        console.log("vars"+vars);
+        console.log("varla:"+vars[vars.length]);
+        console.log("varla11:"+vars.length);
+        return vars[vars.length-1];
+    }
+</script>
+<!--
+通过数据库内容转为html
+<script id="LAY-article-tpl" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <div class="item">
+        <div class="item-content">
+            <h3>{{ item.title }}</h3>
+            <br/>
+            <br/>
+            <div class="itemContent">{{ item.content }}</div>
+            <br/>
+            <br/>
+            <br/>
+            <a onclick="javascript:window.open('./article-detail/{{item.articleId}}')">
+                <button class="layui-btn">阅读全文</button>
+            </a>
+        </div>
+        <div class="date-box">
+            <div class="date">
+                <h4>{{ getDay(item.createTime) }}</h4>
+                <span>{{ getTime(item.createTime) }} </span>
+            </div>
+        </div>
+    </div>
+    {{#  }); }}
+    {{#  if(d.length === 0){ }}
+    暂时文章呢
+    {{#  } }}
+</script>
+-->
+</body>
+</html>

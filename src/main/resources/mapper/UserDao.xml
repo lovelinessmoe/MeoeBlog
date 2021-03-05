@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meow.blog.dao.UserDao">
+  <resultMap id="BaseResultMap" type="com.meow.blog.entity.User">
+    <id column="articleId" jdbcType="INTEGER" property="articleid" />
+    <result column="articleTitle" jdbcType="VARCHAR" property="articletitle" />
+    <result column="articleTime" jdbcType="DATE" property="articletime" />
+    <result column="articleContent" jdbcType="VARCHAR" property="articlecontent" />
+    <result column="typeId" jdbcType="INTEGER" property="typeid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    articleId, articleTitle, articleTime, articleContent, typeId
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from article
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.meow.blog.entity.User">
+    insert into article (articleId, articleTitle, articleTime, 
+      articleContent, typeId)
+    values (#{articleid,jdbcType=INTEGER}, #{articletitle,jdbcType=VARCHAR}, #{articletime,jdbcType=DATE}, 
+      #{articlecontent,jdbcType=VARCHAR}, #{typeid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.meow.blog.entity.User">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="articleid != null">
+        articleId,
+      </if>
+      <if test="articletitle != null">
+        articleTitle,
+      </if>
+      <if test="articletime != null">
+        articleTime,
+      </if>
+      <if test="articlecontent != null">
+        articleContent,
+      </if>
+      <if test="typeid != null">
+        typeId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="articleid != null">
+        #{articleid,jdbcType=INTEGER},
+      </if>
+      <if test="articletitle != null">
+        #{articletitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articletime != null">
+        #{articletime,jdbcType=DATE},
+      </if>
+      <if test="articlecontent != null">
+        #{articlecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        #{typeid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.meow.blog.entity.User">
+    update article
+    <set>
+      <if test="articletitle != null">
+        articleTitle = #{articletitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articletime != null">
+        articleTime = #{articletime,jdbcType=DATE},
+      </if>
+      <if test="articlecontent != null">
+        articleContent = #{articlecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="typeid != null">
+        typeId = #{typeid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.meow.blog.entity.User">
+    update article
+    set articleTitle = #{articletitle,jdbcType=VARCHAR},
+      articleTime = #{articletime,jdbcType=DATE},
+      articleContent = #{articlecontent,jdbcType=VARCHAR},
+      typeId = #{typeid,jdbcType=INTEGER}
+    where articleId = #{articleid,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,17 @@
+public Comment(Integer articleid, String content) {
+        this.articleid = articleid;
+        this.content = content;
+        this.creattime = new java.sql.Date(new Date().getTime());
+
+    }
+
+
+    <select id="selectByArticleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from comment
+        where articleid = #{articleid,jdbcType=INTEGER}
+      </select>
+
+
+  List<Comment> selectByArticleId(Integer articleid);

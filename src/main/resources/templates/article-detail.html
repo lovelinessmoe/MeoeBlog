@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=no,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0">
+    <title>博客</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/static/css/index.css">
+    <script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?7e9287ce32ec37e72643f388a23af365";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+</head>
+<body>
+<!-- 侧边内容 -->
+<div class="sidebar-content">
+    <div class="layui-card">
+        <div class="layui-card-header">
+            <img src="http://q1.qlogo.cn/g?b=qq&nk=1695560542&s=640" alt="" width="120"><br/>
+            <span>逗比先生</span>
+        </div>
+        <div class="layui-card-body">
+            <ul>
+                <li class="txt">
+                    <span>0</span><br/>
+                    <span>文章</span>
+                </li>
+
+                <li class="visitors">
+                    <span>0</span><br/>
+                    <span>访问人数</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <ul class="layui-nav">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+    </ul>
+</div>
+
+<!-- 主要内容 -->
+<div class="main mood message  mood-details article1 layui-form" lay-filter="article">
+    <div class="top_title">文章 &#62 <span class="articletitle"></span></div>
+    <div class="item1">
+        <div class="item-content">
+            <h3 class="articletitle" th:text="${session.article.getArticletitle()}"></h3>
+            <br>
+            <p class="label">
+                <!--<span class="Subtitle"></span>-->
+                <span class="tb"><i class="layui-icon layui-icon-radio"></i></span>
+                <span class="time" th:text="${#dates.format(session.article.getArticletime(),'yyyy/MM/dd')}"></span></p>
+            <br>
+            <div class="content" th:text="${session.article.getArticlecontent()}">
+
+            </div>
+        </div>
+    </div>
+    <div class="item">
+        <div class="layui-card">
+            <div class="layui-card-header">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item layui-form-text">
+                        <div class="layui-input-block">
+                            <textarea placeholder="既然来了,就说几句吧" class="layui-textarea" id="LAY-msg-content"
+                                      style="resize: none;"></textarea>
+                            <div class="btn-box">
+                                <button class="layui-btn" type="button" id="item-btn">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="layui-card-body">
+                <div class="title">
+                    <p><span>全部评论</span><em id="count" th:text="${session.commentList.size()}">1</em></p>
+                </div>
+                <ul class="list-item" id="LAY-msg-box">
+                    <li th:each="comment : ${session.commentList}">
+                        <img src="/static/img/avatar.jpg" alt="">
+                        <div class="list-txt">
+                            <p class="max-title">
+                                <span class="name" th:text="${comment.getUsername()}">{{ item.userName }}</span>
+                                <span class="time" th:text="${comment.getCreattime()}">{{ item.createTime }}</span></p>
+                            <p class="list-content" th:text="${comment.getContent()}">{{ item.content }}</p>
+                        </div>
+                    </li>
+                </ul>
+                <div id="demo1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 搜索框 -->
+<div class="seach">
+    <div class="layui-form seach-box" action="">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn"><i class="layui-icon layui-icon-search"></i></button>
+                <input type="text" name="key" lay-verify="required" placeholder="搜索相关" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="/layui/layui.js"></script>
+<!--[if lt IE 9]>
+<script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+<script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script>
+    layui.config({
+        base: '/static/js/'
+    }).use(['layBlog', 'util', 'code'], function () {
+        var $ = layui.$;
+        var util = layui.util;
+        layui.code();
+        var oid = getQueryVariable();
+        // 获取文章信息
+
+        /*
+        $.post(layui.api.api + "api/article/getArticleByOid", {oid: oid}, function (res) {
+            if (res.code == 0) {
+                $(".articletitle").text(res.data.title);
+                $(".content").html(res.data.content);
+                $(".time").text(util.toDateString(new Date(res.data.createTime),'yyyy/MM/dd'));
+            } else {
+                layer.msg(res.msg);
+            }
+        });
+
+*/
+
+
+
+        var laytpl = layui.laytpl;
+        var laypage = layui.laypage;
+        // 获取评论信息
+        /*
+                function getPage(pageNum) {
+                    $.post(layui.api.api + "api/articleMessage/getPage", {current: pageNum, articleOid: oid}, function (res) {
+                        if (res.code === 0) {
+                            var elemCont = $('#LAY-msg-content');
+                            $("#count").text(res.total);
+                            var view = $('#LAY-msg-tpl').html();
+                            //模板渲染
+                            $('#LAY-msg-box').html("");
+                            laytpl(view).render(res.records, function (html) {
+                                $('#LAY-msg-box').prepend(html);
+                                elemCont.val('');
+                            });
+                            if (pageNum == null) {
+                                laypage.render({
+                                    elem: 'demo1'
+                                    , count: res.total //数据总数
+                                    , jump: function (obj, first) {
+                                        //首次不执行
+                                        if (!first) {
+                                            getPage(obj.curr);
+                                            //do something
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            layer.msg('留言信息查询失败', {
+                                icon: 1
+                            });
+                        }
+                    });
+                }
+
+                getPage();
+        */
+
+        // var submit = true;
+        //end 提交
+
+        // $('#item-btn').onclick(function () {
+        $('#item-btn').on('click', function () {
+            // if (!submit) {
+            //     return;
+            // }
+            // submit = false;
+            // var data = new Date();
+            // var f = data.getFullYear(), m = data.getMonth(), g = data.getDate();
+            // time = f + '/' + m + '/' + g;
+            var elemCont = $('#LAY-msg-content')
+                , content = elemCont.val();
+            if (content.replace(/\s/g, '') == "") {
+                layer.msg('请先输入留言');
+                return elemCont.focus();
+            } else {
+                // api/articleMessage/addMessage
+                $.post(layui.api.api + "addMessage", {
+                    content: content,
+                    articleOid: oid
+                }, function (res) {
+                    submit = true;
+                    if (res.code == 0) {
+                        // getPage();
+                        // reload();
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                });
+            }
+        })
+    });
+
+    function getQueryVariable() {
+        /*
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] === variable) {
+                return pair[1];
+            }
+        }
+        return (false);
+        */
+        /*
+
+        eg
+        http://localhost:8080/article-detail/2
+        结果为2
+        */
+        var url = location.href;
+        var vars = url.split("/");
+        console.log("vars"+vars);
+        console.log("varla:"+vars[vars.length]);
+        console.log("varla11:"+vars.length);
+        return vars[vars.length-1];
+    }
+</script>
+<script id="LAY-msg-tpl" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <li>
+        <img src="/static/img/avatar.jpg" alt="">
+        <div class="list-txt">
+            <p class="max-title"><span class="name">{{ item.userName }}</span><span
+                    class="time">{{ item.createTime }}</span></p>
+            <p class="list-content">{{ item.content }}</p>
+        </div>
+    </li>
+    {{#  }); }}
+    {{#  if(d.length === 0){ }}
+    暂时没有人留言呢！
+    {{#  } }}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meow.blog.dao.CommentDao">
+    <resultMap id="BaseResultMap" type="com.meow.blog.entity.Comment">
+        <id column="commentId" jdbcType="INTEGER" property="commentid"/>
+        <result column="articleid" jdbcType="INTEGER" property="articleid"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="creattime" jdbcType="DATE" property="creattime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    commentId, articleid, content, username, creattime
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where commentId = #{commentid,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectByArticleId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from comment
+        where articleid = #{articleid,jdbcType=INTEGER}
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comment
+    where commentId = #{commentid,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="commentId" keyProperty="commentid" parameterType="com.meow.blog.entity.Comment"
+            useGeneratedKeys="true">
+    insert into comment (articleid, content, username, 
+      creattime)
+    values (#{articleid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{creattime,jdbcType=DATE})
+  </insert>
+    <insert id="insertSelective" keyColumn="commentId" keyProperty="commentid"
+            parameterType="com.meow.blog.entity.Comment" useGeneratedKeys="true">
+        insert into comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleid != null">
+                articleid,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="creattime != null">
+                creattime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleid != null">
+                #{articleid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                #{creattime,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.meow.blog.entity.Comment">
+        update comment
+        <set>
+            <if test="articleid != null">
+                articleid = #{articleid,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                creattime = #{creattime,jdbcType=DATE},
+            </if>
+        </set>
+        where commentId = #{commentid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.meow.blog.entity.Comment">
+    update comment
+    set articleid = #{articleid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=DATE}
+    where commentId = #{commentid,jdbcType=INTEGER}
+  </update>
+</mapper>
