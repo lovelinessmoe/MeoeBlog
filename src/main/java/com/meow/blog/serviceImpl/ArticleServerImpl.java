@@ -60,4 +60,15 @@ public class ArticleServerImpl implements ArticleServer {
     public Article getArticleByOid(Integer oid) {
         return articleDao.selectByPrimaryKey(oid);
     }
+
+
+    @Override
+    public Integer updateArticle(Article article) {
+        return articleDao.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    public Integer addArticle(Article article) {
+        return articleDao.insertSelective(article);
+    }
 }

@@ -5,6 +5,7 @@
  */
 layui.api = {
     api: "http://localhost:8080/"
+
     // api: "http://www.doubi.link:7070/"
 };
 layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exports) {
@@ -15,7 +16,6 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
             , laypage = layui.laypage
             , form = layui.form;
         var leftHtml = [
-            // layui.api.api + "api/article/getArticleByOid"
             "<li class=\"layui-nav-item\"><a href="+layui.api.api+"article>文章<br/>ARTICLE</a></li>",
             "<li class=\"layui-nav-item \"><a href="+layui.api.api+"message>留言<br/>MESSAGE</a></li>",
             "<li class=\"layui-nav-item last\"><a href="+layui.api.api+"about>关于<br/>ABOUT</a></li>"
@@ -26,10 +26,10 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
         var names = window.location.pathname.split('/');
         var leftItme = $(".layui-nav .layui-nav-item");
         switch (names[names.length - 1]) {
-            case "message":
+            case "message.html":
                 $(leftItme[1]).addClass("layui-this");
                 break;
-            case "about":
+            case "about.html":
                 $(leftItme[2]).addClass("layui-this");
                 break;
             default:
@@ -45,12 +45,11 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
                 }
                 edit = true;
                 var oid = getQueryVariable('oid');
-                var url = layui.api.api+"article/Edit";
+                console.log("jsoid:"+oid);
+                var url = "/article/Edit/";
                 if(oid){
-                    url += "/" + oid;
-                    // url += "?oid=" + oid;
+                    url += oid;
                 }
-                console.log("jsoid:"+ oid+"href:"+window.location.href)
                 layer.open({
                     type: 2
                     , title: "文章内容"
@@ -66,7 +65,7 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
                         iframeWindow.layui.form.on('submit(' + submitID + ')', function (data) {
                             edit = false;
                             data.field.content = iframeWindow.layui.layedit.getContent(iframeWindow.layui.layedit.index);
-                            $.post(layui.api.api + "article/addOrUpdateArticle", data.field, function (res) {
+                            $.post(layui.api.api + "/article/addOrUpdateArticle", data.field, function (res) {
                                 if (res.code == 0) {
                                     layer.close(index);
                                 }
@@ -87,8 +86,7 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
         });
 
         function search() {
-            // window.location.href = '/article?key=' + $(".seach-box .layui-input").val()
-            window.location.href = '/article/' + $(".seach-box .layui-input").val()
+            window.location.href = './article.html?key=' + $(".seach-box .layui-input").val()
         }
 
         $.post(layui.api.api + "api/visit/addVisit", {goLink: document.referrer}, function (res) {

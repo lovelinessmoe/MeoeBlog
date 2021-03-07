@@ -57,7 +57,7 @@
                 <span class="tb"><i class="layui-icon layui-icon-radio"></i></span>
                 <span class="time" th:text="${#dates.format(session.article.getArticletime(),'yyyy/MM/dd')}"></span></p>
             <br>
-            <div class="content" th:text="${session.article.getArticlecontent()}">
+            <div class="content" th:utext="${session.article.getArticlecontent()}">
 
             </div>
         </div>

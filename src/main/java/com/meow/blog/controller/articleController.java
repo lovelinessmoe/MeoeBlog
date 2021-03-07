@@ -3,10 +3,12 @@ package com.meow.blog.controller;
 import com.meow.blog.entity.Article;
 import com.meow.blog.serviceImpl.ArticleServerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -50,24 +52,39 @@ public class articleController {
         return "article";
     }
 
-    @RequestMapping("/addOrUpdateArticle")
-    public String edit(@RequestParam(name = "oid",defaultValue = " ") String oid ,
-                       @RequestParam("title") String title,
-                       @RequestParam("content") String content,
-                       @RequestParam("key") String keyval
-    ) {
-        //TODO
-        Integer articleid = Integer.parseInt(oid);
-        Integer key = Integer.parseInt(keyval);
-        System.out.println("article"+newArticle(articleid, title, content, key));
+    @Value("${key}")
+    private String key;
 
-        return "article";
+    @RequestMapping("/addOrUpdateArticle")
+    @ResponseBody
+
+    public void edit(Article article, @RequestParam("key") String keyVal, @RequestParam("content") String content) {
+        //TODO
+        article.setArticletime(new java.sql.Date(new Date().getTime()));
+
+        if (key.equals(keyVal)) {
+
+            article.setArticlecontent(content);
+
+            if (article.getArticleid() != null) {
+                if (articleServer.updateArticle(article) > 0)
+                    session.setAttribute("msg", "更新成功");
+            } else {
+                if (articleServer.addArticle(article) > 0)
+                    session.setAttribute("msg", "添加成功");
+            }
+        } else {
+            session.setAttribute("msg", "密码错误");
+        }
+        System.out.println("addOrUpdateArticle:" + article);
+        System.out.println("keyval" + keyVal);
+
     }
 
 
     @RequestMapping("/Edit/{oid}")
-    @ResponseBody
-    public Article articleEdit(@PathVariable("oid") String oid) {
+//    @ResponseBody
+    public String articleEdit(@PathVariable("oid") String oid) {
 
         int articleid = Integer.parseInt(oid);
 
@@ -77,8 +94,8 @@ public class articleController {
 
         System.out.println(article);
 
-        return article;
-//        return "articleEdit";
+//        return article;
+        return "articleEdit";
 
     }
 
@@ -100,19 +117,20 @@ public class articleController {
 
     /**
      * 通过Oid获取文章内容
+     *
      * @param key
      * @return
      */
-    /*
+
     @RequestMapping("/getArticleByOid")
-    public String getArticleByOid(@RequestParam("oid") String oid){
+    @ResponseBody
+    public String getArticleByOid(@RequestParam("oid") String oid) {
         int ArticleId = Integer.parseInt(oid);
         Article article = articleServer.getArticleByOid(ArticleId);
         session.setAttribute("article", article);
         System.out.println(article);
-        return "/article-detail/"+oid;
+        return "/article-detail/" + oid;
     }
-*/
 
 
     /**
@@ -138,15 +156,6 @@ public class articleController {
         return "article";
     }
 */
-    @GetMapping("/editArticle")
-
-    public Integer newArticle(@RequestParam("oid") Integer oid,
-                              @RequestParam("title") String title,
-                              @RequestParam("content") String content,
-                              @RequestParam("key") Integer key) {
-        return articleServer.editArticle(oid, title, content, key);
-
-    }
 
 
 }
