@@ -86,7 +86,8 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
         });
 
         function search() {
-            window.location.href = './article.html?key=' + $(".seach-box .layui-input").val()
+            window.location.href = '/article/' + $(".seach-box .layui-input").val()
+            // window.location.href = './article.html?key=' + $(".seach-box .layui-input").val()
         }
 
         $.post(layui.api.api + "api/visit/addVisit", {goLink: document.referrer}, function (res) {

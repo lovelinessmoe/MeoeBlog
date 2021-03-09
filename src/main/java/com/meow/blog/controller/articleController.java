@@ -22,21 +22,13 @@ public class articleController {
     private HttpSession session;
 
     @RequestMapping("")
-    public String getPage(@RequestParam(name = "key", defaultValue = " ") String key) {
+    public String getPage() {
         /*
         获取文章基本信息
          */
-        System.out.println(key);
-        if (!key.equals(" ")) {
-
-            //TODO
-
-        } else {
-            List<Article> list = articleServer.getPage();
-            session.setAttribute("list", list);
-            System.out.println("list" + list);
-        }
-
+        List<Article> list = articleServer.getPage();
+        session.setAttribute("list", list);
+        System.out.println("list:" + list);
         return "article";
     }
 
@@ -49,6 +41,9 @@ public class articleController {
      */
     @RequestMapping("/{key}")
     public String search(@PathVariable("key") String key) {
+        List<Article> search = articleServer.search(key);
+        session.setAttribute("list",search);
+        System.out.println("search:"+search);
         return "article";
     }
 
@@ -118,7 +113,7 @@ public class articleController {
     /**
      * 通过Oid获取文章内容
      *
-     * @param key
+     * @param 
      * @return
      */
 

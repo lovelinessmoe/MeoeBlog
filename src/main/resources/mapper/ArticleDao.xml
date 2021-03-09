@@ -23,6 +23,13 @@
     from article
   </select>
 
+  <select id="search" resultMap="BaseResultMap" >
+    select *
+    from article
+    where articleTitle like '%${key}%'
+        or articleContent like '%${key}%'
+  </select>
+
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from article

@@ -38,7 +38,7 @@ public class IndexController {
     /**
      * get文章
      *
-     * @param key
+     * @param
      * @return
      */
 

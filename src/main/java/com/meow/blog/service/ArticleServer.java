@@ -15,4 +15,6 @@ public interface ArticleServer {
     Integer updateArticle(Article article);
 
     Integer addArticle(Article article);
+
+    List<Article> search(String key);
 }

@@ -18,4 +18,6 @@ public interface ArticleDao {
     int updateByPrimaryKeySelective(Article record);
 
     int updateByPrimaryKey(Article record);
+
+    List<Article> search(String key);
 }

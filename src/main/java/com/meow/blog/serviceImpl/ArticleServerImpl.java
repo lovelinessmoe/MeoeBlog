@@ -71,4 +71,9 @@ public class ArticleServerImpl implements ArticleServer {
     public Integer addArticle(Article article) {
         return articleDao.insertSelective(article);
     }
+
+    @Override
+    public List<Article> search(String key) {
+        return articleDao.search(key);
+    }
 }
