@@ -57,7 +57,6 @@
             }
         }
         return (false);
-
     }
 
     layui.config({
@@ -66,18 +65,9 @@
         var layedit = layui.layedit;
         var $ = layui.jquery;
         var oid = getQueryVariable('oid');
-        console.log("oid1" + oid);
-        // oid = $("#oid").val();
-        // console.log("oid2"+oid);
         if (oid) {
-            $.post(layui.api.api + "api/article/getArticleByOid", {oid: oid}, function (res) {
-                if (res.code == 0) {
-
-                    initEdit();
-
-                } else {
-                    layer.msg(res.msg);
-                }
+            $.post(layui.api.api + "api/article/getArticleByOid", {oid: oid}, function () {
+                location.reload();
             });
         } else {
             initEdit();

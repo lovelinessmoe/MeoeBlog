@@ -8,8 +8,6 @@ public interface ArticleServer {
 
     List<Article> getPage();
 
-    Integer editArticle(Integer oid, String title, String content, Integer key);
-
     Article getArticleByOid(Integer oid);
 
     Integer updateArticle(Article article);

@@ -116,7 +116,6 @@
     </ul>
 </div>
 
-
 <!-- 主要内容 -->
 <div class="main article">
     <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
@@ -127,26 +126,6 @@
     </div>
     <div id="LAY-article-tpl-html">
         <div>
-            <!--<h1 th:text="${#requset.list.articletitle}">这是标题</h1>-->
-            <!--<h1 th:text="${a}">这是标题</h1>-->
-            <!--<h2 th:text="${#dates.format(s.articletime,'yyyy-MM-dd')}">这是时间</h2>-->
-            <!--<h1>这是标题</h1>-->
-
-
-            <!--
-            <tr th:each="article : ${session.list}">
-                <a th:href="article-detail/${article.getArticleid()}">
-                    <h1 style="color: #dda354">
-                        <td th:text="${article.getArticletitle()}">标题</td>
-                    </h1>
-                    <h3 style="color: #dda354">
-                        <td th:text="${#dates.format(article.getArticletime(),'yyyy-MM-dd')}">2.41</td>
-                    </h3>
-                </a>
-            </tr>
-
-            -->
-
             <div class="item" th:each="article : ${session.list}">
                 <div class="item-content">
                     <h3 th:text="${article.getArticletitle()}">标题</h3>
@@ -165,13 +144,11 @@
                 <div class="date-box">
                     <div class="date">
                         <h4 th:text="${#dates.format(article.getArticletime(),'dd')}">{{Day}}
-
                         </h4>
                         <span th:text="${#dates.format(article.getArticletime(),'yyyy/MM')}">{{Time}} </span>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <div id="demo1"></div>
@@ -209,43 +186,6 @@
         if (key) {
             $(".seach-box .layui-input").val(decodeURI(key));
         }
-
-        /*
-    function getPage(pageNum) {
-        var url = "api/article/getPage";
-        $.post(layui.api.api + url, {keyStr: key});
-        $.post(layui.api.api + url, {keyStr: key}, function (res) {
-            if (res.code === 0) {
-                var bean = $('#LAY-article-tpl-html');
-                bean("");
-                laytpl($($('#LAY-article-tpl'))()).render(res.records, function (html) {
-                    bean.append(html);
-                });
-                if (pageNum == null) {
-                    laypage.render({
-                        elem: 'demo1'
-                        , count: res.total //数据总数
-                        , jump: function (obj, first) {
-                            //首次不执行
-                            if (!first) {
-                                getPage(obj.curr);
-                                //do something
-                            }
-                        }
-                    });
-                }
-            } else {
-                layer.msg('未查询到相关文章！', {
-                    icon: 1
-                });
-            }
-        });
-
-
-    }
-
-    getPage();
-        */
     });
     var getDay = function (time) {
         return util.toDateString(new Date(time), 'dd');
@@ -256,18 +196,7 @@
     };
 
     function getQueryVariable(variable) {
-        /*
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            if (pair[0] === variable) {
-                return pair[1];
-            }
-        }
-        return null;
 
-        */
         var url = location.href;
         var vars = url.split("/");
         console.log("vars"+vars);
@@ -276,35 +205,6 @@
         return vars[vars.length-1];
     }
 </script>
-<!--
-通过数据库内容转为html
-<script id="LAY-article-tpl" type="text/html">
-    {{#  layui.each(d, function(index, item){ }}
-    <div class="item">
-        <div class="item-content">
-            <h3>{{ item.title }}</h3>
-            <br/>
-            <br/>
-            <div class="itemContent">{{ item.content }}</div>
-            <br/>
-            <br/>
-            <br/>
-            <a onclick="javascript:window.open('./article-detail/{{item.articleId}}')">
-                <button class="layui-btn">阅读全文</button>
-            </a>
-        </div>
-        <div class="date-box">
-            <div class="date">
-                <h4>{{ getDay(item.createTime) }}</h4>
-                <span>{{ getTime(item.createTime) }} </span>
-            </div>
-        </div>
-    </div>
-    {{#  }); }}
-    {{#  if(d.length === 0){ }}
-    暂时文章呢
-    {{#  } }}
-</script>
--->
+
 </body>
 </html>

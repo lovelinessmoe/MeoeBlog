@@ -124,35 +124,23 @@
         base: '/static/js/'
     }).use(['layBlog', 'util', 'code'], function () {
         var $ = layui.$;
-        var util = layui.util;
         layui.code();
         var oid = getQueryVariable();
         // 获取文章信息
 
-        var laytpl = layui.laytpl;
-        var laypage = layui.laypage;
-
         $('#item-btn').on('click', function () {
-
             var elemCont = $('#LAY-msg-content')
                 , content = elemCont.val();
             if (content.replace(/\s/g, '') == "") {
                 layer.msg('请先输入留言');
                 return elemCont.focus();
             } else {
-                // api/articleMessage/addMessage
                 $.post(layui.api.api + "addMessage", {
                     content: content,
                     articleOid: oid
-                }, function (res) {
+                }, function () {
                     submit = true;
                     location.reload();
-                    if (res.code == 0) {
-                        // getPage();
-                        location.reload();
-                    } else {
-                        layer.msg(res.msg);
-                    }
                 });
             }
         })

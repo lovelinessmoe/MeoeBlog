@@ -66,12 +66,7 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
                             edit = false;
                             data.field.content = iframeWindow.layui.layedit.getContent(iframeWindow.layui.layedit.index);
                             $.post(layui.api.api + "/article/addOrUpdateArticle", data.field, function (res) {
-                                if (res.code == 0) {
-                                    layer.close(index);
-                                }
-                                layer.msg(res.msg, {
-                                    icon: 1
-                                });
+                                location.reload();
                             });
                         });
                         submit.trigger('click');
@@ -98,15 +93,6 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
         $.post(layui.api.api + "api/article/getAllCount", {}, function (res) {
             $(".layui-card-body .txt").html("<span >" + res.data + "</span><br/><span>文章</span>")
         });
-
-        /*laypage.render({
-          elem: 'demo1'
-          ,count: 100 //数据总数
-          ,jump: function(obj){
-            //console.log(obj)
-          }
-        });*/
-
 
         exports('layBlog', {});
     }

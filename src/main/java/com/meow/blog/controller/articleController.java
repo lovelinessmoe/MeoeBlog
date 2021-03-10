@@ -42,12 +42,12 @@ public class articleController {
     @RequestMapping("/{key}")
     public String search(@PathVariable("key") String key) {
         List<Article> search = articleServer.search(key);
-        session.setAttribute("list",search);
-        System.out.println("search:"+search);
+        session.setAttribute("list", search);
+        System.out.println("search:" + search);
         return "article";
     }
 
-//    配置文件中的密码
+    //    配置文件中的密码
     @Value("${key}")
     private String key;
 
@@ -79,16 +79,18 @@ public class articleController {
 
 
     @RequestMapping("/Edit/{oid}")
-//    @ResponseBody
-    public String articleEdit(@PathVariable("oid") String oid) {
+    public String articleEdit(@PathVariable(value = "oid") String oid) {
 
-        int articleid = Integer.parseInt(oid);
-
-        Article article = articleServer.getArticleByOid(articleid);
-
-        session.setAttribute("article", article);
-
-        System.out.println(article);
+        if (!oid.equals("article")) {
+//            是数字
+            int articleid = Integer.parseInt(oid);
+            Article article = articleServer.getArticleByOid(articleid);
+            session.setAttribute("article", article);
+            System.out.println(article);
+        } else {
+            session.setAttribute("msg", null);
+            session.setAttribute("article", new Article());
+        }
 
         return "articleEdit";
 
@@ -97,7 +99,7 @@ public class articleController {
     /**
      * 通过Oid获取文章内容
      *
-     * @param 
+     * @param
      * @return
      */
 

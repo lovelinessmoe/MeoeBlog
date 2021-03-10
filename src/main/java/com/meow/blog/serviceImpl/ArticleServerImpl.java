@@ -42,20 +42,6 @@ public class ArticleServerImpl implements ArticleServer {
         return articleDao.selectAllArticle();
     }
 
-    /**
-     * 编辑文章方法
-     * @param oid
-     * @param title
-     * @param content
-     * @param key
-     * @return
-     */
-    @Override
-    public Integer editArticle(Integer oid, String title, String content, Integer key) {
-        //TODO
-        return null;
-    }
-
     @Override
     public Article getArticleByOid(Integer oid) {
         return articleDao.selectByPrimaryKey(oid);
