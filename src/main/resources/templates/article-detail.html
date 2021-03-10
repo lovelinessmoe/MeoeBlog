@@ -24,7 +24,7 @@
     <div class="layui-card">
         <div class="layui-card-header">
             <img src="http://q1.qlogo.cn/g?b=qq&nk=1695560542&s=640" alt="" width="120"><br/>
-            <span>逗比先生</span>
+            <span>南巷飘雪</span>
         </div>
         <div class="layui-card-body">
             <ul>
@@ -129,73 +129,11 @@
         var oid = getQueryVariable();
         // 获取文章信息
 
-        /*
-        $.post(layui.api.api + "api/article/getArticleByOid", {oid: oid}, function (res) {
-            if (res.code == 0) {
-                $(".articletitle").text(res.data.title);
-                $(".content").html(res.data.content);
-                $(".time").text(util.toDateString(new Date(res.data.createTime),'yyyy/MM/dd'));
-            } else {
-                layer.msg(res.msg);
-            }
-        });
-
-*/
-
-
-
         var laytpl = layui.laytpl;
         var laypage = layui.laypage;
-        // 获取评论信息
-        /*
-                function getPage(pageNum) {
-                    $.post(layui.api.api + "api/articleMessage/getPage", {current: pageNum, articleOid: oid}, function (res) {
-                        if (res.code === 0) {
-                            var elemCont = $('#LAY-msg-content');
-                            $("#count").text(res.total);
-                            var view = $('#LAY-msg-tpl').html();
-                            //模板渲染
-                            $('#LAY-msg-box').html("");
-                            laytpl(view).render(res.records, function (html) {
-                                $('#LAY-msg-box').prepend(html);
-                                elemCont.val('');
-                            });
-                            if (pageNum == null) {
-                                laypage.render({
-                                    elem: 'demo1'
-                                    , count: res.total //数据总数
-                                    , jump: function (obj, first) {
-                                        //首次不执行
-                                        if (!first) {
-                                            getPage(obj.curr);
-                                            //do something
-                                        }
-                                    }
-                                });
-                            }
-                        } else {
-                            layer.msg('留言信息查询失败', {
-                                icon: 1
-                            });
-                        }
-                    });
-                }
 
-                getPage();
-        */
-
-        // var submit = true;
-        //end 提交
-
-        // $('#item-btn').onclick(function () {
         $('#item-btn').on('click', function () {
-            // if (!submit) {
-            //     return;
-            // }
-            // submit = false;
-            // var data = new Date();
-            // var f = data.getFullYear(), m = data.getMonth(), g = data.getDate();
-            // time = f + '/' + m + '/' + g;
+
             var elemCont = $('#LAY-msg-content')
                 , content = elemCont.val();
             if (content.replace(/\s/g, '') == "") {
@@ -208,9 +146,10 @@
                     articleOid: oid
                 }, function (res) {
                     submit = true;
+                    location.reload();
                     if (res.code == 0) {
                         // getPage();
-                        // reload();
+                        location.reload();
                     } else {
                         layer.msg(res.msg);
                     }
@@ -220,19 +159,8 @@
     });
 
     function getQueryVariable() {
-        /*
-        var query = window.location.search.substring(1);
-        var vars = query.split("&");
-        for (var i = 0; i < vars.length; i++) {
-            var pair = vars[i].split("=");
-            if (pair[0] === variable) {
-                return pair[1];
-            }
-        }
-        return (false);
-        */
-        /*
 
+        /*
         eg
         http://localhost:8080/article-detail/2
         结果为2

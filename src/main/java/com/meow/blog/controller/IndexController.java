@@ -1,5 +1,6 @@
 package com.meow.blog.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.meow.blog.entity.Article;
 import com.meow.blog.entity.Comment;
 import com.meow.blog.service.CommentService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -45,10 +47,12 @@ public class IndexController {
 
     @RequestMapping("/message")
     public String message() {
+        //对文章id为0的获取消息
+        List<Comment> commentList = commentService.getComment(0);
+        session.setAttribute("commentList", commentList);
+        System.out.println("commentList" + commentList);
         return "message";
     }
-
-
 
 
     /**
@@ -65,7 +69,6 @@ public class IndexController {
         System.out.println("article" + article);
 
 //        获取评论
-
         List<Comment> commentList = commentService.getComment(ArticleId);
         session.setAttribute("commentList", commentList);
         System.out.println("commentList" + commentList);
@@ -74,13 +77,14 @@ public class IndexController {
     }
 
     @RequestMapping("/addMessage")
+    @ResponseBody
     public String addComment(@RequestParam("content") String content, @RequestParam("articleOid") String articleOid) {
-        System.out.println("articleOid" + articleOid);
+        System.out.println("comment,articleOid" + articleOid);
         int articleid = Integer.parseInt(articleOid);
 
-        commentService.addComment(new Comment(articleid, content));
-
-        return "article-detail";
+        int i = commentService.addComment(new Comment(articleid, content));
+        return null;
+//        return "article-detail";
     }
 
     @RequestMapping("/about")

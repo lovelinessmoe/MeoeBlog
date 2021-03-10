@@ -47,6 +47,7 @@ public class articleController {
         return "article";
     }
 
+//    配置文件中的密码
     @Value("${key}")
     private String key;
 
@@ -89,26 +90,9 @@ public class articleController {
 
         System.out.println(article);
 
-//        return article;
         return "articleEdit";
 
     }
-
-    /*
-
-    @RequestMapping("/Edit")
-    public String articleEdit(@RequestParam("oid") String oid) {
-
-        int articleid = Integer.parseInt(oid);
-
-        Article article = articleServer.getArticleByOid(articleid);
-
-        session.setAttribute("article", article);
-
-        return "articleEdit";
-    }
-    */
-
 
     /**
      * 通过Oid获取文章内容
@@ -126,31 +110,5 @@ public class articleController {
         System.out.println(article);
         return "/article-detail/" + oid;
     }
-
-
-    /**
-     * sql中获取所有文章信息
-     *
-     * @param key
-     * @return
-     */
-
-    /*
-    @RequestMapping("/getPage")
-    public String getPage(@RequestParam(name = "key",defaultValue = " ") String key) {
-        System.out.println(key);
-        if (!key.equals(" ")) {
-
-        //TODO
-
-        } else {
-            List<Article> list = articleServer.getPage();
-            session.setAttribute("list", list);
-            System.out.println("list"+list);
-        }
-        return "article";
-    }
-*/
-
 
 }

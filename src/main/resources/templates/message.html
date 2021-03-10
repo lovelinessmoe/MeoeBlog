@@ -11,7 +11,7 @@
 
     <script>
         var _hmt = _hmt || [];
-        (function() {
+        (function () {
             var hm = document.createElement("script");
             hm.src = "https://hm.baidu.com/hm.js?7e9287ce32ec37e72643f388a23af365";
             var s = document.getElementsByTagName("script")[0];
@@ -35,7 +35,7 @@
                 </li>
 
                 <li class="visitors">
-                    <span >0</span><br/>
+                    <span>0</span><br/>
                     <span>访问人数</span>
                 </li>
             </ul>
@@ -68,6 +68,15 @@
                     <p><span>全部留言</span><em id="count">1</em></p>
                 </div>
                 <ul class="list-item" id="LAY-msg-box">
+                    <li th:each="comment : ${session.commentList}">
+                        <img src="/static/img/avatar.jpg" alt="">
+                        <div class="list-txt">
+                            <p class="max-title">
+                                <span class="name" th:text="${comment.getUsername()}">{{ item.userName }}</span>
+                                <span class="time" th:text="${comment.getCreattime()}">{{ item.createTime }}</span></p>
+                            <p class="list-content" th:text="${comment.getContent()}">{{ item.content }}</p>
+                        </div>
+                    </li>
                 </ul>
                 <div id="demo1"></div>
             </div>
@@ -101,8 +110,9 @@
         var $ = layui.$;
         var laytpl = layui.laytpl;
         var laypage = layui.laypage;
-        function getPage(pageNum){
-            $.post(layui.api.api + "api/message/getPage", {current:pageNum}, function (res) {
+
+        function getPage(pageNum) {
+            $.post(layui.api.api + "message/getPage", {current: pageNum}, function (res) {
                 if (res.code === 0) {
                     var elemCont = $('#LAY-msg-content');
                     $("#count").text(res.total);
@@ -113,13 +123,13 @@
                         $('#LAY-msg-box').prepend(html);
                         elemCont.val('');
                     });
-                    if(pageNum == null){
+                    if (pageNum == null) {
                         laypage.render({
                             elem: 'demo1'
                             , count: res.total //数据总数
-                            , jump: function (obj,first) {
+                            , jump: function (obj, first) {
                                 //首次不执行
-                                if(!first){
+                                if (!first) {
                                     getPage(obj.curr);
                                     //do something
                                 }
@@ -133,29 +143,35 @@
                 }
             });
         }
+
         getPage();
 
         var submit = true;
         //end 提交
-        $('#item-btn').on('click', function(){
-            if(!submit){
-                return ;
+        $('#item-btn').on('click', function () {
+            if (!submit) {
+                return;
             }
             submit = false;
             var data = new Date();
-            var f = data.getFullYear(),m = data.getMonth(),g =data.getDate();
-            time = f+'/'+m+'/'+g;
+            var f = data.getFullYear(), m = data.getMonth(), g = data.getDate();
+            time = f + '/' + m + '/' + g;
             var elemCont = $('#LAY-msg-content')
-                ,content = elemCont.val();
-            if(content.replace(/\s/g, '') == ""){
+                , content = elemCont.val();
+            if (content.replace(/\s/g, '') == "") {
                 layer.msg('请先输入留言');
                 return elemCont.focus();
-            }else{
-                $.post(layui.api.api + "api/message/addMessage", {content:content}, function (res) {
+            } else {
+                $.post(layui.api.api + "addMessage", {
+                    content: content,
+                    articleOid: 0
+                }, function (res) {
                     submit = true;
-                    if(res.code == 0){
-                        getPage();
-                    }else {
+                    location.reload();
+                    if (res.code == 0) {
+                        // getPage();
+                        location.reload();
+                    } else {
                         layer.msg(res.msg);
                     }
                 });
