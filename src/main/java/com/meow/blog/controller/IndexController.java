@@ -1,34 +1,37 @@
 package com.meow.blog.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.meow.blog.entity.Article;
 import com.meow.blog.entity.Comment;
 import com.meow.blog.service.CommentService;
 import com.meow.blog.serviceImpl.ArticleServerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+
+/**
+ * @author loveliness
+ */
 
 @Controller
 public class IndexController {
 
-    @Autowired
+    @Resource
     private ArticleServerImpl articleServer;
 
-    @Autowired
+    @Resource
     private HttpSession session;
 
-    @Autowired
+    @Resource
     private CommentService commentService;
 
     @RequestMapping("/")
-    public String Null() {
+    public String index1() {
         return "index";
     }
 
@@ -40,8 +43,7 @@ public class IndexController {
     /**
      * get文章
      *
-     * @param
-     * @return
+     * @return message.html
      */
 
 
@@ -58,18 +60,18 @@ public class IndexController {
     /**
      * 通过articleId获取文章
      *
-     * @param ArticleId
-     * @return
+     * @param articleId 文章id
+     * @return 详细
      */
 
     @RequestMapping("/article-detail/{articleId}")
-    public String article_detail(@PathVariable("articleId") Integer ArticleId) {
-        Article article = articleServer.getArticleByOid(ArticleId);
+    public String articleDetail(@PathVariable("articleId") Integer articleId) {
+        Article article = articleServer.getArticleByOid(articleId);
         session.setAttribute("article", article);
         System.out.println("article" + article);
 
 //        获取评论
-        List<Comment> commentList = commentService.getComment(ArticleId);
+        List<Comment> commentList = commentService.getComment(articleId);
         session.setAttribute("commentList", commentList);
         System.out.println("commentList" + commentList);
 
@@ -82,7 +84,7 @@ public class IndexController {
         System.out.println("comment,articleOid" + articleOid);
         int articleid = Integer.parseInt(articleOid);
 
-        int i = commentService.addComment(new Comment(articleid, content));
+        commentService.addComment(new Comment(articleid, content));
         return null;
 //        return "article-detail";
     }

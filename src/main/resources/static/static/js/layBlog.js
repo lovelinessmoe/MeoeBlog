@@ -26,10 +26,10 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
         var names = window.location.pathname.split('/');
         var leftItme = $(".layui-nav .layui-nav-item");
         switch (names[names.length - 1]) {
-            case "message.html":
+            case "message":
                 $(leftItme[1]).addClass("layui-this");
                 break;
-            case "about.html":
+            case "about":
                 $(leftItme[2]).addClass("layui-this");
                 break;
             default:
@@ -85,13 +85,13 @@ layui.define(['element', 'carousel', 'laypage', 'form', 'laytpl'], function (exp
             // window.location.href = './article.html?key=' + $(".seach-box .layui-input").val()
         }
 
-        $.post(layui.api.api + "api/visit/addVisit", {goLink: document.referrer}, function (res) {
+        $.post(layui.api.api + "visit/addVisit", {goLink: document.referrer}, function (res) {
         });
-        $.post(layui.api.api + "api/visit/getAllCount", {}, function (res) {
-            $(".layui-card-body .visitors").html("<span >" + res.data + "</span><br/><span>访问人数</span>")
+        $.post(layui.api.api + "visit/getAllCount", {}, function (res) {
+            $(".layui-card-body .visitors").html("<span >" + res + "</span><br/><span>访问人数</span>")
         });
-        $.post(layui.api.api + "api/article/getAllCount", {}, function (res) {
-            $(".layui-card-body .txt").html("<span >" + res.data + "</span><br/><span>文章</span>")
+        $.post(layui.api.api + "article/getAllCount", {}, function (res) {
+            $(".layui-card-body .txt").html("<span >" + res + "</span><br/><span>文章</span>")
         });
 
         exports('layBlog', {});

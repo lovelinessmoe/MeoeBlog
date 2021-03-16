@@ -2,30 +2,35 @@ package com.meow.blog.controller;
 
 import com.meow.blog.entity.Article;
 import com.meow.blog.serviceImpl.ArticleServerImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 
+
+/**
+ * @author loveliness
+ */
 @Controller
 @RequestMapping("/article")
-public class articleController {
+public class ArticleController {
 
-    @Autowired
+    @Resource
     private ArticleServerImpl articleServer;
 
-    @Autowired
+    @Resource
     private HttpSession session;
 
+    /**
+     * 获取所有文章基本信息
+     *
+     * @return article.html
+     */
     @RequestMapping("")
     public String getPage() {
-        /*
-        获取文章基本信息
-         */
         List<Article> list = articleServer.getPage();
         session.setAttribute("list", list);
         System.out.println("list:" + list);
@@ -36,8 +41,8 @@ public class articleController {
     /**
      * 搜索
      *
-     * @param key
-     * @return
+     * @param key 密码
+     * @return article.html
      */
     @RequestMapping("/{key}")
     public String search(@PathVariable("key") String key) {
@@ -47,27 +52,38 @@ public class articleController {
         return "article";
     }
 
-    //    配置文件中的密码
+    /**
+     * 配置文件中的密码
+     */
     @Value("${key}")
     private String key;
 
+    /**
+     * 添加或更新文章
+     *
+     * @param article bean_entity
+     * @param keyVal 密码
+     * @param content 文章
+     */
     @RequestMapping("/addOrUpdateArticle")
     @ResponseBody
 
     public void edit(Article article, @RequestParam("key") String keyVal, @RequestParam("content") String content) {
-        //TODO
-        article.setArticletime(new java.sql.Date(new Date().getTime()));
+        article.setArticletime(new java.sql.Date(System.currentTimeMillis()));
+
 
         if (key.equals(keyVal)) {
 
             article.setArticlecontent(content);
 
             if (article.getArticleid() != null) {
-                if (articleServer.updateArticle(article) > 0)
+                if (articleServer.updateArticle(article) > 0) {
                     session.setAttribute("msg", "更新成功");
+                }
             } else {
-                if (articleServer.addArticle(article) > 0)
+                if (articleServer.addArticle(article) > 0) {
                     session.setAttribute("msg", "添加成功");
+                }
             }
         } else {
             session.setAttribute("msg", "密码错误");
@@ -78,39 +94,33 @@ public class articleController {
     }
 
 
-    @RequestMapping("/Edit/{oid}")
-    public String articleEdit(@PathVariable(value = "oid") String oid) {
-
-        if (!oid.equals("article")) {
-//            是数字
-            int articleid = Integer.parseInt(oid);
-            Article article = articleServer.getArticleByOid(articleid);
-            session.setAttribute("article", article);
-            System.out.println(article);
-        } else {
-            session.setAttribute("msg", null);
-            session.setAttribute("article", new Article());
-        }
-
-        return "articleEdit";
-
-    }
-
     /**
      * 通过Oid获取文章内容
      *
-     * @param
-     * @return
+     * @param oid 文章id
+     * @return 详细文章地址
      */
 
     @RequestMapping("/getArticleByOid")
     @ResponseBody
     public String getArticleByOid(@RequestParam("oid") String oid) {
-        int ArticleId = Integer.parseInt(oid);
-        Article article = articleServer.getArticleByOid(ArticleId);
+        int articleId = Integer.parseInt(oid);
+        Article article = articleServer.getArticleByOid(articleId);
         session.setAttribute("article", article);
         System.out.println(article);
         return "/article-detail/" + oid;
+    }
+
+    /**
+     * 获得所有文章数量
+     *
+     * @return 文章数量
+     */
+    @RequestMapping("/getAllCount")
+    @ResponseBody
+    public Integer getAllCount() {
+        List<Article> page = articleServer.getPage();
+        return page.size();
     }
 
 }
