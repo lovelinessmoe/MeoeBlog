@@ -9,23 +9,23 @@
     <link rel="stylesheet" href="/static/css/index.css">
 </head>
 <body class="body_hei edit" style="background-color: #FFFFFF;background:url(..) no-repeat;">
-<h4 th:text="${session.msg}"></h4>
+<h4 th:text="${msg}"></h4>
 <form class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
       style="padding: 20px 0 0 0;height: 100%">
     <input type="hidden" name="articleid" id="oid"
-           th:value="${session.article.getArticleid()}"/>
+           th:value="${article.getArticleid()}"/>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">标题</label>
         <div class="layui-input-block">
             <textarea name="articletitle" placeholder="请输入内容" class="layui-textarea articletitle"
-                      th:text="${session.article.getArticletitle()}"></textarea>
+                      th:text="${article.getArticletitle()}"></textarea>
         </div>
     </div>
     <div class="layui-form-item layui-form-text">
         <label class="layui-form-label">内容</label>
         <div class="layui-input-block">
             <textarea name="articlecontent" id="demo" style="display: none;" class="content"
-                      th:text="${session.article.getArticlecontent()}"></textarea>
+                      th:text="${article.getArticlecontent()}"></textarea>
         </div>
     </div>
     <div class="layui-form-item">
@@ -112,7 +112,6 @@
 
     });
 </script>
-<!--<script src="https://unpkg.com/qiniu-js@2.5.5/dist/qiniu.min.js"></script>-->
-<!--<script src="/static/js/qiniu.js"></script>-->
+
 </body>
 </html>

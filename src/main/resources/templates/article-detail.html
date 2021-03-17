@@ -41,7 +41,6 @@
         </div>
     </div>
     <ul class="layui-nav">
-        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
     </ul>
 </div>
 
@@ -50,14 +49,14 @@
     <div class="top_title">文章 &#62 <span class="articletitle"></span></div>
     <div class="item1">
         <div class="item-content">
-            <h3 class="articletitle" th:text="${session.article.getArticletitle()}"></h3>
+            <h3 class="articletitle" th:text="${article.getArticletitle()}"></h3>
             <br>
             <p class="label">
                 <!--<span class="Subtitle"></span>-->
                 <span class="tb"><i class="layui-icon layui-icon-radio"></i></span>
-                <span class="time" th:text="${#dates.format(session.article.getArticletime(),'yyyy/MM/dd')}"></span></p>
+                <span class="time" th:text="${#dates.format(article.getArticletime(),'yyyy/MM/dd')}"></span></p>
             <br>
-            <div class="content" th:utext="${session.article.getArticlecontent()}">
+            <div class="content" th:utext="${article.getArticlecontent()}">
 
             </div>
         </div>
@@ -80,10 +79,10 @@
             </div>
             <div class="layui-card-body">
                 <div class="title">
-                    <p><span>全部评论</span><em id="count" th:text="${session.commentList.size()}">1</em></p>
+                    <p><span>全部评论</span><em id="count" th:text="${commentList.size()}">1</em></p>
                 </div>
                 <ul class="list-item" id="LAY-msg-box">
-                    <li th:each="comment : ${session.commentList}">
+                    <li th:each="comment : ${commentList}">
                         <img src="/static/img/avatar.jpg" alt="">
                         <div class="list-txt">
                             <p class="max-title">
@@ -161,21 +160,5 @@
         return vars[vars.length-1];
     }
 </script>
-<script id="LAY-msg-tpl" type="text/html">
-    {{#  layui.each(d, function(index, item){ }}
-    <li>
-        <img src="/static/img/avatar.jpg" alt="">
-        <div class="list-txt">
-            <p class="max-title"><span class="name">{{ item.userName }}</span><span
-                    class="time">{{ item.createTime }}</span></p>
-            <p class="list-content">{{ item.content }}</p>
-        </div>
-    </li>
-    {{#  }); }}
-    {{#  if(d.length === 0){ }}
-    暂时没有人留言呢！
-    {{#  } }}
-</script>
-
 </body>
 </html>

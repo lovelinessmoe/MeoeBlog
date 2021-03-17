@@ -21,6 +21,7 @@
   <select id="selectAllArticle" resultMap="BaseResultMap" >
     select *
     from article
+    ORDER BY articleId DESC
   </select>
 
   <select id="search" resultMap="BaseResultMap" >

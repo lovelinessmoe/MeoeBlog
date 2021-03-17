@@ -24,6 +24,7 @@ public class VisitController {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         String num;
         num = bufferedReader.readLine();
+        System.out.println("visit:num:"+num);
         int vistedNum = Integer.parseInt(num);
 
         is.close();
@@ -40,8 +41,8 @@ public class VisitController {
         File info = new File("src/main/resources/static/static/info.txt");
         String num;
 
-        int vistedNum = getAllCount();
-        num = String.valueOf(vistedNum + 1);
+        int visitNum = getAllCount();
+        num = String.valueOf(visitNum + 1);
 
 //        写入文件
         FileWriter fileWriter = new FileWriter(info);

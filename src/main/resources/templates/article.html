@@ -49,7 +49,6 @@
         </div>
     </div>
     <ul class="layui-nav">
-        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
     </ul>
 </div>
 
@@ -126,7 +125,7 @@
     </div>
     <div id="LAY-article-tpl-html">
         <div>
-            <div class="item" th:each="article : ${session.list}">
+            <div class="item" th:each="article : ${list}">
                 <div class="item-content">
                     <h3 th:text="${article.getArticletitle()}">标题</h3>
                     <br/>
@@ -137,7 +136,6 @@
                     <br/>
                     <a th:onclick="'javascript:window.open(\'/article-detail/'+${article.getArticleid()}+'\');'">
                         <!--是异步处理-->
-                        <!--<a th:onclick="'javascript:window.open(\'./article-detail?oid='+${article.getArticleid()}+'\');'">-->
                         <button class="layui-btn">阅读全文</button>
                     </a>
                 </div>
@@ -187,14 +185,6 @@
             $(".seach-box .layui-input").val(decodeURI(key));
         }
     });
-    var getDay = function (time) {
-        return util.toDateString(new Date(time), 'dd');
-    };
-    var getTime = function (time) {
-        time = new Date(time);
-        return util.toDateString(time, 'yyyy/MM');
-    };
-
     function getQueryVariable(variable) {
 
         var url = location.href;
